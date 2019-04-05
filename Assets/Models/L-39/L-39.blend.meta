@@ -1,0 +1,184 @@
+fileFormatVersion: 2
+guid: 439f7dbc4847cb64dbb7a601370510a4
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Cube
+    100004: Cube_001
+    100006: Cube_002
+    100008: Cube_003
+    100010: aileron-left
+    100012: aileron-right
+    100014: canopy-placeholder
+    100016: elevator-left
+    100018: elevator-right
+    100020: flap-left
+    100022: flap-right
+    100024: fuselage
+    100026: geardoor-back-inner-left
+    100028: geardoor-back-inner-right
+    100030: geardoor-back-outer-left
+    100032: geardoor-back-outer-right
+    100034: geardoor-front
+    100036: rudder
+    400000: //RootNode
+    400002: Cube
+    400004: Cube_001
+    400006: Cube_002
+    400008: Cube_003
+    400010: aileron-left
+    400012: aileron-right
+    400014: canopy-placeholder
+    400016: elevator-left
+    400018: elevator-right
+    400020: flap-left
+    400022: flap-right
+    400024: fuselage
+    400026: geardoor-back-inner-left
+    400028: geardoor-back-inner-right
+    400030: geardoor-back-outer-left
+    400032: geardoor-back-outer-right
+    400034: geardoor-front
+    400036: rudder
+    2100000: unnamed
+    2300000: Cube
+    2300002: Cube_001
+    2300004: Cube_002
+    2300006: Cube_003
+    2300008: aileron-left
+    2300010: aileron-right
+    2300012: canopy-placeholder
+    2300014: elevator-left
+    2300016: elevator-right
+    2300018: flap-left
+    2300020: flap-right
+    2300022: fuselage
+    2300024: geardoor-back-inner-left
+    2300026: geardoor-back-inner-right
+    2300028: geardoor-back-outer-left
+    2300030: geardoor-back-outer-right
+    2300032: geardoor-front
+    2300034: rudder
+    3300000: Cube
+    3300002: Cube_001
+    3300004: Cube_002
+    3300006: Cube_003
+    3300008: aileron-left
+    3300010: aileron-right
+    3300012: canopy-placeholder
+    3300014: elevator-left
+    3300016: elevator-right
+    3300018: flap-left
+    3300020: flap-right
+    3300022: fuselage
+    3300024: geardoor-back-inner-left
+    3300026: geardoor-back-inner-right
+    3300028: geardoor-back-outer-left
+    3300030: geardoor-back-outer-right
+    3300032: geardoor-front
+    3300034: rudder
+    4300000: Cube_003
+    4300002: Cube_002
+    4300004: Cube_001
+    4300006: Cube
+    4300008: canopy-placeholder
+    4300010: geardoor-front
+    4300012: geardoor-back-outer-right
+    4300014: geardoor-back-inner-right
+    4300016: geardoor-back-outer-left
+    4300018: geardoor-back-inner-left
+    4300020: rudder
+    4300022: flap-right
+    4300024: aileron-right
+    4300026: elevator-right
+    4300028: elevator-left
+    4300030: flap-left
+    4300032: aileron-left
+    4300034: fuselage
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
