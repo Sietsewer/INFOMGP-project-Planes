@@ -22,6 +22,18 @@ ModelImporter:
     100032: geardoor-back-outer-right
     100034: geardoor-front
     100036: rudder
+    100038: c_elevator-left
+    100040: c_elevator-right
+    100042: c_fuselage-front
+    100044: c_fuselage-mid
+    100046: c_fuselage-rear
+    100048: c_rudder
+    100050: c_wing-left-mid
+    100052: c_wing-left-root
+    100054: c_wing-left-tip
+    100056: c_wing-right-mid
+    100058: c_wing-right-root
+    100060: c_wing-right-tip
     400000: //RootNode
     400002: Cube
     400004: Cube_001
@@ -41,6 +53,18 @@ ModelImporter:
     400032: geardoor-back-outer-right
     400034: geardoor-front
     400036: rudder
+    400038: c_elevator-left
+    400040: c_elevator-right
+    400042: c_fuselage-front
+    400044: c_fuselage-mid
+    400046: c_fuselage-rear
+    400048: c_rudder
+    400050: c_wing-left-mid
+    400052: c_wing-left-root
+    400054: c_wing-left-tip
+    400056: c_wing-right-mid
+    400058: c_wing-right-root
+    400060: c_wing-right-tip
     2100000: unnamed
     2300000: Cube
     2300002: Cube_001
@@ -60,6 +84,18 @@ ModelImporter:
     2300030: geardoor-back-outer-right
     2300032: geardoor-front
     2300034: rudder
+    2300036: c_elevator-left
+    2300038: c_elevator-right
+    2300040: c_fuselage-front
+    2300042: c_fuselage-mid
+    2300044: c_fuselage-rear
+    2300046: c_rudder
+    2300048: c_wing-left-mid
+    2300050: c_wing-left-root
+    2300052: c_wing-left-tip
+    2300054: c_wing-right-mid
+    2300056: c_wing-right-root
+    2300058: c_wing-right-tip
     3300000: Cube
     3300002: Cube_001
     3300004: Cube_002
@@ -78,6 +114,18 @@ ModelImporter:
     3300030: geardoor-back-outer-right
     3300032: geardoor-front
     3300034: rudder
+    3300036: c_elevator-left
+    3300038: c_elevator-right
+    3300040: c_fuselage-front
+    3300042: c_fuselage-mid
+    3300044: c_fuselage-rear
+    3300046: c_rudder
+    3300048: c_wing-left-mid
+    3300050: c_wing-left-root
+    3300052: c_wing-left-tip
+    3300054: c_wing-right-mid
+    3300056: c_wing-right-root
+    3300058: c_wing-right-tip
     4300000: Cube_003
     4300002: Cube_002
     4300004: Cube_001
@@ -96,6 +144,32 @@ ModelImporter:
     4300030: flap-left
     4300032: aileron-left
     4300034: fuselage
+    4300036: c_elevator-left
+    4300038: c_elevator-right
+    4300040: c_rudder
+    4300042: c_wing-left-tip
+    4300044: c_wing-left-root
+    4300046: c_wing-left-mid
+    4300048: c_wing-right-tip
+    4300050: c_wing-right-mid
+    4300052: c_wing-right-root
+    4300054: c_fuselage-front
+    4300056: c_fuselage-mid
+    4300058: c_fuselage-rear
+    6400000: aileron-left
+    6400002: aileron-right
+    6400004: canopy-placeholder
+    6400006: elevator-left
+    6400008: elevator-right
+    6400010: flap-left
+    6400012: flap-right
+    6400014: fuselage
+    6400016: geardoor-back-inner-left
+    6400018: geardoor-back-inner-right
+    6400020: geardoor-back-outer-left
+    6400022: geardoor-back-outer-right
+    6400024: geardoor-front
+    6400026: rudder
     2186277476908879412: ImportLogs
   externalObjects: {}
   materials:
