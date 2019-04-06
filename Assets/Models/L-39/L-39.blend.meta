@@ -34,6 +34,7 @@ ModelImporter:
     100056: c_wing-right-mid
     100058: c_wing-right-root
     100060: c_wing-right-tip
+    100062: colliders
     400000: //RootNode
     400002: Cube
     400004: Cube_001
@@ -65,6 +66,7 @@ ModelImporter:
     400056: c_wing-right-mid
     400058: c_wing-right-root
     400060: c_wing-right-tip
+    400062: colliders
     2100000: unnamed
     2300000: Cube
     2300002: Cube_001
