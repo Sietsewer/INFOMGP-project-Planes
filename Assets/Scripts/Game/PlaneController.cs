@@ -15,8 +15,10 @@
         public float roll;
         [Range(-1, 1)]
         public float yaw;
-        [Range(0, 90)]
+        [Range(0, 1)]
         public float flaps;
+
+        public float maxFlaps = 90;
 
         // Start is called before the first frame update
         private void Start()
@@ -59,7 +61,7 @@
                         surface.SetPosition((yaw + 1) / 2);
                         break;
                     case BoundControlSurface.ControlSurfaceType.Flap:
-                        surface.SetAngle(flaps);
+                        surface.SetAngle(flaps * maxFlaps);
                         break;
                     default: continue;
                 }
