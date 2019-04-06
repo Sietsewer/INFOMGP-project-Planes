@@ -10,6 +10,9 @@
     public class PlaneController : MonoBehaviour
     {
         public List<BoundControlSurface> ControlSurfaces;
+        public List<WheelCollider> Wheels;
+
+        public List<Thruster> Thrusters;
 
         [Range(-1, 1)]
         public float pitch;
@@ -19,6 +22,12 @@
         public float yaw;
         [Range(0, 1)]
         public float flaps;
+
+        [Range(0, 1)]
+        public float brakes;
+
+        [Range(0, 1)]
+        public float throttle;
 
         private Animator animator;
         new private Rigidbody rigidbody;
@@ -53,12 +62,32 @@
 
         private void Update()
         {
-            if (gear != p_gear)
+            bool weightOnWheels = false;
+            
+            foreach (WheelCollider wheel in Wheels)
             {
-                p_gear = gear;
-                animator.SetBool(ANIMATOR_LANDING_GEAR, gear);
+                wheel.brakeTorque = brakes;
+                wheel.motorTorque = throttle > float.Epsilon ? 1 : 0;
+
+                if(!weightOnWheels && wheel.isGrounded)
+                {
+                    weightOnWheels = true;
+                }
             }
 
+            if (gear != p_gear)
+            {
+                if (weightOnWheels)
+                {
+                    gear = p_gear;
+                }
+                else
+                {
+                    p_gear = gear;
+                    animator.SetBool(ANIMATOR_LANDING_GEAR, gear);
+                }
+            }
+            
             pitch = Mathf.Clamp(pitch, -1, 1);
             roll = Mathf.Clamp(roll, -1, 1);
             yaw = Mathf.Clamp(yaw, -1, 1);
@@ -84,8 +113,12 @@
                     default: continue;
                 }
             }
-
-
+            
+            foreach (Thruster thruster in Thrusters)
+            {
+                thruster.throttle = throttle;
+            }
+            
             Vector3 comLine = Vector3.up;
             Vector3 com = rigidbody.worldCenterOfMass;
             Debug.DrawLine(com, com + comLine, Color.magenta);
