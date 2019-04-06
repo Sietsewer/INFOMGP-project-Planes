@@ -35,6 +35,15 @@ ModelImporter:
     100058: c_wing-right-root
     100060: c_wing-right-tip
     100062: colliders
+    100064: gear-front
+    100066: gear-front-pivot
+    100068: gear-rear-left
+    100070: gear-rear-right
+    100072: gear-rear-wheel-left
+    100074: gear-rear-wheel-right
+    100076: wheel
+    100078: gear-rear-left_001
+    100080: gear-rear-wheel-left_001
     400000: //RootNode
     400002: Cube
     400004: Cube_001
@@ -67,6 +76,15 @@ ModelImporter:
     400058: c_wing-right-root
     400060: c_wing-right-tip
     400062: colliders
+    400064: gear-front
+    400066: gear-front-pivot
+    400068: gear-rear-left
+    400070: gear-rear-right
+    400072: gear-rear-wheel-left
+    400074: gear-rear-wheel-right
+    400076: wheel
+    400078: gear-rear-left_001
+    400080: gear-rear-wheel-left_001
     2100000: unnamed
     2300000: Cube
     2300002: Cube_001
@@ -98,6 +116,15 @@ ModelImporter:
     2300054: c_wing-right-mid
     2300056: c_wing-right-root
     2300058: c_wing-right-tip
+    2300060: gear-front
+    2300062: gear-front-pivot
+    2300064: gear-rear-left
+    2300066: gear-rear-right
+    2300068: gear-rear-wheel-left
+    2300070: gear-rear-wheel-right
+    2300072: wheel
+    2300074: gear-rear-left_001
+    2300076: gear-rear-wheel-left_001
     3300000: Cube
     3300002: Cube_001
     3300004: Cube_002
@@ -128,6 +155,15 @@ ModelImporter:
     3300054: c_wing-right-mid
     3300056: c_wing-right-root
     3300058: c_wing-right-tip
+    3300060: gear-front
+    3300062: gear-front-pivot
+    3300064: gear-rear-left
+    3300066: gear-rear-right
+    3300068: gear-rear-wheel-left
+    3300070: gear-rear-wheel-right
+    3300072: wheel
+    3300074: gear-rear-left_001
+    3300076: gear-rear-wheel-left_001
     4300000: Cube_003
     4300002: Cube_002
     4300004: Cube_001
@@ -158,6 +194,15 @@ ModelImporter:
     4300054: c_fuselage-front
     4300056: c_fuselage-mid
     4300058: c_fuselage-rear
+    4300060: gear-rear-right
+    4300062: gear-rear-wheel-right
+    4300064: gear-rear-left
+    4300066: gear-rear-wheel-left
+    4300068: gear-front
+    4300070: gear-front-pivot
+    4300072: wheel
+    4300074: gear-rear-left_001
+    4300076: gear-rear-wheel-left_001
     6400000: aileron-left
     6400002: aileron-right
     6400004: canopy-placeholder

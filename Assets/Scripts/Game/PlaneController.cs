@@ -5,6 +5,8 @@
     using UnityEngine;
     using Physics;
 
+    [RequireComponent(typeof(Animator))]
+    [RequireComponent(typeof(Rigidbody))]
     public class PlaneController : MonoBehaviour
     {
         public List<BoundControlSurface> ControlSurfaces;
@@ -18,12 +20,21 @@
         [Range(0, 1)]
         public float flaps;
 
+        private Animator animator;
+        new private Rigidbody rigidbody;
+
         public float maxFlaps = 90;
 
-        // Start is called before the first frame update
-        private void Start()
-        {
+        private bool p_gear;
+        public bool gear;
 
+        private void Awake()
+        {
+            animator = FindObjectOfType<Animator>();
+
+            p_gear = gear = animator.GetBool(ANIMATOR_LANDING_GEAR);
+
+            rigidbody = FindObjectOfType<Rigidbody>();
         }
 
         private void Reset()
@@ -38,9 +49,16 @@
             }
         }
 
-        // Update is called once per frame
+        const string ANIMATOR_LANDING_GEAR = "Landing gear";
+
         private void Update()
         {
+            if (gear != p_gear)
+            {
+                p_gear = gear;
+                animator.SetBool(ANIMATOR_LANDING_GEAR, gear);
+            }
+
             pitch = Mathf.Clamp(pitch, -1, 1);
             roll = Mathf.Clamp(roll, -1, 1);
             yaw = Mathf.Clamp(yaw, -1, 1);
@@ -66,6 +84,11 @@
                     default: continue;
                 }
             }
+
+
+            Vector3 comLine = Vector3.up;
+            Vector3 com = rigidbody.worldCenterOfMass;
+            Debug.DrawLine(com, com + comLine, Color.magenta);
         }
     }
 }

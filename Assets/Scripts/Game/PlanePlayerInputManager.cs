@@ -27,6 +27,11 @@
             PlaneController.roll = Input.GetAxis("roll");
             PlaneController.yaw = Input.GetAxis("yaw");
             PlaneController.flaps = (Input.GetAxis("flaps") + 1) / 2;
+
+            if (Input.GetButtonUp("gear"))
+            {
+                PlaneController.gear = !PlaneController.gear;
+            }
         }
     }
 }
