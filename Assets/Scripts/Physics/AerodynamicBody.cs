@@ -4,23 +4,66 @@
     using System.Collections.Generic;
     using UnityEngine;
     using UnityEditor;
+    using System;
 
-    [RequireComponent(typeof(Rigidbody))]
-    [RequireComponent(typeof(Collider))]
+    [RequireComponent(typeof(MeshCollider))]
     public class AerodynamicBody : MonoBehaviour
     {
         new private Rigidbody rigidbody;
-        new private Collider collider;
+        new private MeshCollider collider;
 
-        [Range(0, 1)]
-        public float liftyness = .01f;
+        public Vector3 forward = Vector3.down;
 
-        public Vector3 liftDirection = new Vector3(0, 1.0f, 0);
+        public Vector3 up = Vector3.forward;
+
+        public float angle = 0.0f;
+
+        private Vector3 center;
+
+        public float surfaceMultiplier = 1.0f;
+
+        public float area;
+
+        public WingCharacteristics wing;
 
         private void Awake() // First time initialization
         {
-            rigidbody = GetComponent<Rigidbody>();
-            collider = GetComponent<Collider>();
+            Debug.Assert(wing != null, "No wing characteristics!", gameObject);
+
+            rigidbody = GetComponentInParent<Rigidbody>();
+            collider = GetComponent<MeshCollider>();
+
+            area = CalculateLiftingSurfaceArea() * surfaceMultiplier;
+
+            center = Utilities.CalculateCenterOfMass(collider.sharedMesh);
+        }
+        
+        private float CalculateLiftingSurfaceArea()
+        {
+            Debug.Assert(collider != null);
+
+            Debug.Assert(collider.convex, "Collider must be convex for AerodynamicBody.", collider); // Collider must be convex.
+
+            Mesh mesh = collider.sharedMesh;
+
+            float area = 0.0f;
+
+            for (int i = 0; i < mesh.triangles.Length / 3; i++)
+            {
+                Vector3 a = mesh.vertices[mesh.triangles[i * 3 + 0]];
+                Vector3 b = mesh.vertices[mesh.triangles[i * 3 + 1]];
+                Vector3 c = mesh.vertices[mesh.triangles[i * 3 + 2]];
+                
+                a = Vector3.ProjectOnPlane(a, up);
+                b = Vector3.ProjectOnPlane(b, up);
+                c = Vector3.ProjectOnPlane(c, up);
+
+                area += Vector3.Cross((b - a), (c - a)).magnitude / 2; // We want the top-down area, so project it on the up vector.
+            }
+
+            area /= 2; // Only want half the area
+
+            return area;
         }
 
         private void OnEnable() // On (re)activation
@@ -37,20 +80,26 @@
         {
             // Use `Time.fixedDeltaTime` as delta-t
 
-            liftDirection.Normalize();
+            var upWorld = transform.TransformDirection(up);
+            
+            var centerOfLiftWorld = transform.TransformPoint(center);
 
-            var liftVector = liftDirection * liftyness;
+            var forwardWorld = transform.TransformDirection(forward);
 
-            liftVector *= rigidbody.velocity.magnitude;
-            liftVector *= Time.fixedDeltaTime;
+            var velocityVector = rigidbody.GetPointVelocity(centerOfLiftWorld);
 
-            var liftVectorWorld = transform.localToWorldMatrix.MultiplyVector(liftVector);
+            var velocity = Vector3.Dot(forwardWorld, velocityVector);
 
-            var centerOfLiftWorld = transform.position + rigidbody.centerOfMass;
+            var angleOfAttack = Vector3.Dot(velocityVector.normalized, -upWorld.normalized) * Mathf.PI;
 
-            Debug.DrawLine(centerOfLiftWorld, centerOfLiftWorld + liftVectorWorld, Color.magenta);
+            var liftCoefficient = wing.LiftCoefficient(Mathf.Rad2Deg * angleOfAttack);  ///= 2 * Mathf.PI * (Mathf.Abs(angleOfAttack) > aoaLimit ? 0 : angleOfAttack);
 
-            rigidbody.AddForceAtPosition(liftVectorWorld, centerOfLiftWorld, ForceMode.Impulse);
+            var lift = liftCoefficient * ((Utilities.AtmosphericDensity(centerOfLiftWorld) * (velocity * velocity)) / 2) * area;
+
+
+            Debug.DrawLine(centerOfLiftWorld, centerOfLiftWorld + (upWorld * lift), Color.magenta);
+
+            rigidbody.AddForceAtPosition(upWorld * lift * Time.fixedDeltaTime, centerOfLiftWorld, ForceMode.Impulse);
         }
 
         private void Update() // Frame update
