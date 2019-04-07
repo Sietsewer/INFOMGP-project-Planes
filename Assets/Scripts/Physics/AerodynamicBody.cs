@@ -2,124 +2,95 @@
 {
     using System.Collections;
     using System.Collections.Generic;
-    using UnityEngine;
     using UnityEditor;
-    using System;
+    using UnityEngine;
 
-    [RequireComponent(typeof(MeshCollider))]
+    [RequireComponent(typeof(Rigidbody))]
     public class AerodynamicBody : MonoBehaviour
     {
         new private Rigidbody rigidbody;
-        new private MeshCollider collider;
 
-        public Vector3 forward = Vector3.down;
+        private List<AerodynamicElement> elements;
 
-        public Vector3 up = Vector3.forward;
+        internal Rigidbody Rigidbody { get { return rigidbody; } }
 
-        public float angle = 0.0f;
-
-        private Vector3 center;
-
-        public float surfaceMultiplier = 1.0f;
-
-        public float area;
-
-        public WingCharacteristics wing;
-
-        private void Awake() // First time initialization
+        public void RegisterElement(AerodynamicElement element)
         {
-            Debug.Assert(wing != null, "No wing characteristics!", gameObject);
-
-            rigidbody = GetComponentInParent<Rigidbody>();
-            collider = GetComponent<MeshCollider>();
-
-            area = CalculateLiftingSurfaceArea() * surfaceMultiplier;
-
-            center = Utilities.CalculateCenterOfMass(collider.sharedMesh);
+            elements.Add(element);
         }
-        
-        private float CalculateLiftingSurfaceArea()
+
+        private void Awake()
         {
-            Debug.Assert(collider != null);
+            rigidbody = FindObjectOfType<Rigidbody>();
+        }
 
-            Debug.Assert(collider.convex, "Collider must be convex for AerodynamicBody.", collider); // Collider must be convex.
+        private void Start()
+        {
+            elements = new List<AerodynamicElement>(GetComponentsInChildren<AerodynamicElement>());
+        }
 
-            Mesh mesh = collider.sharedMesh;
+        private void FixedUpdate()
+        {
+            _currentImpulses.Clear();
 
-            float area = 0.0f;
+            float totalForceNorm = 0;
+            Vector3 totalPositionForce = Vector3.zero;
+            Vector3 totalForce = Vector3.zero;
 
-            for (int i = 0; i < mesh.triangles.Length / 3; i++)
+            foreach (AerodynamicElement element in elements)
             {
-                Vector3 a = mesh.vertices[mesh.triangles[i * 3 + 0]];
-                Vector3 b = mesh.vertices[mesh.triangles[i * 3 + 1]];
-                Vector3 c = mesh.vertices[mesh.triangles[i * 3 + 2]];
-                
-                a = Vector3.ProjectOnPlane(a, up);
-                b = Vector3.ProjectOnPlane(b, up);
-                c = Vector3.ProjectOnPlane(c, up);
+                Impulse impulse = element.GetImpulse(this);
 
-                area += Vector3.Cross((b - a), (c - a)).magnitude / 2; // We want the top-down area, so project it on the up vector.
+                _currentImpulses.Push(impulse);
+
+                float forceNorm = impulse.force.magnitude;
+
+                if (forceNorm != 0.0f)
+                {
+                    totalPositionForce += impulse.position * forceNorm;
+                    totalForceNorm += forceNorm;
+                    totalForce += impulse.force;
+                }
             }
 
-            area /= 2; // Only want half the area
+            if (totalForceNorm > float.Epsilon)
+            {
+                Vector3 centerOfForce = totalPositionForce / totalForceNorm;
 
-            return area;
+                rigidbody.AddForceAtPosition(totalForce * Time.fixedDeltaTime, centerOfForce, ForceMode.Impulse);
+
+                _currentImpulse = new Impulse { position = centerOfForce, force = totalForce };
+            }
         }
 
-        private void OnEnable() // On (re)activation
+        private Impulse _currentImpulse;
+        private Stack<Impulse> _currentImpulses = new Stack<Impulse>();
+
+        private void OnDrawGizmos()
         {
+            if (_currentImpulse.force.magnitude != 0.0f)
+            {
+                Gizmos.color = Color.yellow;
+                Gizmos.DrawSphere(_currentImpulse.position, 1f);
 
-        }
+                Gizmos.color = Color.red;
+                Gizmos.DrawLine(_currentImpulse.position, _currentImpulse.position + _currentImpulse.force.normalized);
+                
+                Handles.color = Color.magenta;
+                Handles.Label(_currentImpulse.position, "Force : " + _currentImpulse.force.magnitude);
+            }
 
-        private void Start() // First time initialization (late)
-        {
+            foreach (Impulse impulse in _currentImpulses)
+            {
+                Gizmos.color = Color.blue;
+                Gizmos.DrawSphere(impulse.position, 0.5f);
 
-        }
+                Gizmos.color = Color.cyan;
+                Gizmos.DrawLine(impulse.position, impulse.position + impulse.force.normalized);
 
-        private void FixedUpdate() // Physics update
-        {
-            // Use `Time.fixedDeltaTime` as delta-t
-
-            var upWorld = transform.TransformDirection(up);
-            
-            var centerOfLiftWorld = transform.TransformPoint(center);
-
-            var forwardWorld = transform.TransformDirection(forward);
-
-            var velocityVector = rigidbody.GetPointVelocity(centerOfLiftWorld);
-
-            var velocity = Vector3.Dot(forwardWorld, velocityVector);
-
-            var angleOfAttack = Vector3.Dot(velocityVector.normalized, -upWorld.normalized) * Mathf.PI;
-
-            var liftCoefficient = wing.LiftCoefficient(Mathf.Rad2Deg * angleOfAttack);  ///= 2 * Mathf.PI * (Mathf.Abs(angleOfAttack) > aoaLimit ? 0 : angleOfAttack);
-
-            var lift = liftCoefficient * ((Utilities.AtmosphericDensity(centerOfLiftWorld) * (velocity * velocity)) / 2) * area;
-
-
-            Debug.DrawLine(centerOfLiftWorld, centerOfLiftWorld + (upWorld * lift), Color.magenta);
-
-            rigidbody.AddForceAtPosition(upWorld * lift * Time.fixedDeltaTime, centerOfLiftWorld, ForceMode.Impulse);
-        }
-
-        private void Update() // Frame update
-        {
-            // Use `Time.deltaTime` as delta-t
-        }
-
-        private void LateUpdate() // Post-animation (integration) frame update
-        {
-            // Again, use `Time.deltaTime` as delta-t
-        }
-
-        private void OnDisable() // On de-activation
-        {
-
-        }
-
-        private void OnDestroy() // Finalization
-        {
-
+                Handles.color = Color.green;
+                Handles.Label(impulse.position, "" + impulse.force.magnitude);
+            }
         }
     }
 }

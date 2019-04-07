@@ -103,4 +103,10 @@
             return sum / totalVolume;
         }
     }
+
+    internal struct Impulse
+    {
+        public Vector3 position;
+        public Vector3 force;
+    }
 }

@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bca39af3687b29d42ae038ea8eda794b, type: 3}
-  m_Name: L-39_wing_main
+  m_Name: L-39_wing_rudder
   m_EditorClassIdentifier: 
-  liftMultiplier: 2
-  AngleOfAttackLimitMax: 30
-  AngleOfAttackLimitMin: -30
+  liftMultiplier: 10
+  AngleOfAttackLimitMax: 70
+  AngleOfAttackLimitMin: -70
   LiftCoefficientCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: -39.973167
+      time: -69
       value: -1.45
       inSlope: 0
       outSlope: 0
@@ -28,7 +28,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: -29.973167
+      time: -19
       value: -1.7
       inSlope: 0
       outSlope: 0
@@ -37,7 +37,16 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 10.026833
+      time: 1
+      value: 0.03043747
+      inSlope: 0.14378408
+      outSlope: 0.14378408
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.1393597
+    - serializedVersion: 3
+      time: 19
       value: 1.7
       inSlope: 0
       outSlope: 0
@@ -46,7 +55,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 20.026833
+      time: 69
       value: 1.45
       inSlope: 0
       outSlope: 0
@@ -62,7 +71,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: -90.01355
+      time: -90
       value: -1
       inSlope: 0
       outSlope: 0
@@ -71,7 +80,16 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 89.95239
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 90
       value: 1
       inSlope: 0
       outSlope: 0

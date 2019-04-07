@@ -12,7 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bca39af3687b29d42ae038ea8eda794b, type: 3}
   m_Name: L-39_wing_symetric
   m_EditorClassIdentifier: 
-  AngleOfAttackLimit: 30
+  liftMultiplier: 2
+  AngleOfAttackLimitMax: 30
+  AngleOfAttackLimitMin: -30
   LiftCoefficientCurve:
     serializedVersion: 2
     m_Curve:
@@ -46,6 +48,31 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 25.033245
       value: 1.45
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  dragMultiplier: 1
+  DragCoefficientCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -90
+      value: -1.0000434
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 89.98305
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
