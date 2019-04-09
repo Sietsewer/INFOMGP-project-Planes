@@ -44,6 +44,14 @@
             p_gear = gear = animator.GetBool(ANIMATOR_LANDING_GEAR);
 
             rigidbody = FindObjectOfType<Rigidbody>();
+
+            int cnt = 1;
+            foreach(string name in Input.GetJoystickNames())
+            {
+                Debug.Log(string.Format("Device {0}: {1}", cnt, name));
+
+                cnt++;
+            }
         }
 
         private void Reset()

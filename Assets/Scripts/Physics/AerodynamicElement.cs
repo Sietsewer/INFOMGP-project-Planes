@@ -25,18 +25,22 @@
 
         public WingCharacteristics wing;
 
+        new private Rigidbody rigidbody;
+
         private void Awake() // First time initialization
         {
             Debug.Assert(wing != null, "No wing characteristics!", gameObject);
             
             collider = GetComponent<MeshCollider>();
 
-            area = CalculateLiftingSurfaceArea() * surfaceMultiplier;
+            area = CalculateLiftingSurfaceArea(transform.localToWorldMatrix) * surfaceMultiplier;
 
             center = Utilities.CalculateCenterOfMass(collider.sharedMesh);
+
+            rigidbody = GetComponentInParent<Rigidbody>();
         }
         
-        private float CalculateLiftingSurfaceArea()
+        private float CalculateLiftingSurfaceArea(Matrix4x4 localToWorldMatrix)
         {
             Debug.Assert(collider != null);
 
@@ -44,17 +48,19 @@
 
             Mesh mesh = collider.sharedMesh;
 
+            Vector3 worldUp = localToWorldMatrix.MultiplyVector(up);
+
             float area = 0.0f;
 
             for (int i = 0; i < mesh.triangles.Length / 3; i++)
             {
-                Vector3 a = mesh.vertices[mesh.triangles[i * 3 + 0]];
-                Vector3 b = mesh.vertices[mesh.triangles[i * 3 + 1]];
-                Vector3 c = mesh.vertices[mesh.triangles[i * 3 + 2]];
+                Vector3 a = localToWorldMatrix.MultiplyPoint(mesh.vertices[mesh.triangles[i * 3 + 0]]);
+                Vector3 b = localToWorldMatrix.MultiplyPoint(mesh.vertices[mesh.triangles[i * 3 + 1]]);
+                Vector3 c = localToWorldMatrix.MultiplyPoint(mesh.vertices[mesh.triangles[i * 3 + 2]]);
                 
-                a = Vector3.ProjectOnPlane(a, up);
-                b = Vector3.ProjectOnPlane(b, up);
-                c = Vector3.ProjectOnPlane(c, up);
+                a = Vector3.ProjectOnPlane(a, worldUp);
+                b = Vector3.ProjectOnPlane(b, worldUp);
+                c = Vector3.ProjectOnPlane(c, worldUp);
 
                 area += Vector3.Cross((b - a), (c - a)).magnitude / 2; // We want the top-down area, so project it on the up vector.
             }
@@ -78,50 +84,89 @@
         {
             // Use `Time.fixedDeltaTime` as delta-t
 
-
-        }
-
-        internal Impulse GetImpulse(AerodynamicBody body)
-        {
             Vector3 upWorld = transform.TransformDirection(up);
             Vector3 centerOfLiftWorld = transform.TransformPoint(center);
             Vector3 forwardWorld = transform.TransformDirection(forward);
-            Vector3 velocityVector = body.Rigidbody.GetPointVelocity(centerOfLiftWorld);
+            Vector3 velocityVector = rigidbody.GetPointVelocity(centerOfLiftWorld);
 
-            Vector3 liftForce = GetLift(body, velocityVector, velocityVector.magnitude, Utilities.AtmosphericDensity(centerOfLiftWorld), centerOfLiftWorld, upWorld, forwardWorld);
-            Vector3 dragForce = GetDrag(body, velocityVector, velocityVector.magnitude, Utilities.AtmosphericDensity(centerOfLiftWorld), centerOfLiftWorld, upWorld, forwardWorld);
-
-            Vector3 totalForceVector = liftForce + dragForce;
+            Vector3 liftForce = GetLift(velocityVector, velocityVector.sqrMagnitude, Utilities.AtmosphericDensity(centerOfLiftWorld), centerOfLiftWorld, upWorld, forwardWorld);
+            Vector3 dragForce = GetDrag(velocityVector, velocityVector.sqrMagnitude, Utilities.AtmosphericDensity(centerOfLiftWorld), centerOfLiftWorld, upWorld, forwardWorld);
             
-            return new Impulse { force = totalForceVector, position = centerOfLiftWorld };
+#if DEBUG
+            {
+                Debug.DrawLine(centerOfLiftWorld, centerOfLiftWorld + liftForce * Time.fixedDeltaTime, Color.blue);
+                Debug.DrawLine(centerOfLiftWorld, centerOfLiftWorld + dragForce * Time.fixedDeltaTime, Color.yellow);
+
+                Debug.DrawLine(centerOfLiftWorld, centerOfLiftWorld + upWorld, Color.black);
+                Debug.DrawLine(centerOfLiftWorld, centerOfLiftWorld + forwardWorld, Color.white);
+                Debug.DrawLine(centerOfLiftWorld, centerOfLiftWorld + (rigidbody.mass * rigidbody.velocity) * Time.fixedDeltaTime, Color.red);
+            }
+#endif
+            
+            rigidbody.AddForceAtPosition(liftForce * Time.fixedDeltaTime, centerOfLiftWorld, ForceMode.Impulse);
+            rigidbody.AddForceAtPosition(dragForce * Time.fixedDeltaTime, centerOfLiftWorld, ForceMode.Impulse);
         }
 
-        private Vector3 GetDrag(AerodynamicBody body, Vector3 velocityVector, float velocity, float density, Vector3 centerOfLiftWorld, Vector3 upWorld, Vector3 forwardWorld)
+        private Vector3 GetDrag(Vector3 velocityVector, float velocitySqr, float density, Vector3 centerOfLiftWorld, Vector3 upWorld, Vector3 forwardWorld)
         {
-            float angleToWingUp = Vector3.Dot(upWorld.normalized, velocityVector.normalized) * 90;
+            float angleToWingUp = Vector3.Angle(upWorld, velocityVector) - 90;
 
             float dragCoefficient = wing.DragCoefficient(angleToWingUp);
 
-            float dragNorm = dragCoefficient * ((density * (velocity * velocity)) / 2) * area;
+            float dragNorm = .5f * dragCoefficient * density * velocitySqr * area;
 
-            return -velocityVector.normalized * dragNorm;
+            return -velocityVector.normalized * Mathf.Abs(dragNorm);
         }
 
-        private Vector3 GetLift(AerodynamicBody body, Vector3 velocityVector, float velocity, float density, Vector3 centerOfLiftWorld, Vector3 upWorld, Vector3 forwardWorld)
+        private float _liftCoefficient = 0.0f;
+        private Vector3 _centerOfLiftWorld = Vector3.zero;
+
+        private bool stalling;
+
+        private Vector3 GetLift(Vector3 velocityVector, float velocitySqr, float density, Vector3 centerOfLiftWorld, Vector3 upWorld, Vector3 forwardWorld)
         {
             Vector3 velocityDirection = velocityVector.normalized;
 
-            float angleOfAttack = Vector3.Dot(velocityDirection, -upWorld.normalized) * 90;
-            
+            float angleOfAttack = Vector3.SignedAngle(forwardWorld, velocityVector, Vector3.Cross(upWorld, forwardWorld));
+
             float liftCoefficient = wing.LiftCoefficient(angleOfAttack);
 
-            float liftNorm = liftCoefficient * ((density * (velocity * velocity)) / 2) * area;
+            bool wasStalling = stalling;
+
+            if (stalling = (Mathf.Abs(liftCoefficient) <= float.Epsilon))
+            {
+                if (!wasStalling)
+                {
+                    Debug.Log(string.Format("Entered stall at '{0}' degrees AoA.", angleOfAttack));
+                }
+            }
+            else
+            {
+                if (wasStalling)
+                {
+                    Debug.Log(string.Format("Left stall at '{0}' degrees AoA.", angleOfAttack));
+                }
+            }
+
+            _liftCoefficient = liftCoefficient;
+            _centerOfLiftWorld = centerOfLiftWorld;
+
+            float liftNorm = .5f * liftCoefficient * density * velocitySqr * area;
 
             Vector3 rotationDirection = Vector3.Cross(velocityDirection, upWorld);
 
             Vector3 liftVector = Quaternion.AngleAxis(90, rotationDirection) * velocityDirection;
             
             return liftVector * liftNorm;
+        }
+
+        private void OnDrawGizmos()
+        {
+            if (collider != null && _liftCoefficient <= float.Epsilon)
+            {
+                Gizmos.DrawWireMesh(collider.sharedMesh, transform.position, transform.rotation, transform.lossyScale);
+                Handles.Label(_centerOfLiftWorld, "Stalling!");
+            }
         }
 
         private void Update() // Frame update
