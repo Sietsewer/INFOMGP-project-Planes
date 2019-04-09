@@ -1176,6 +1176,14 @@ PrefabInstance:
       propertyPath: m_LocalRotation.w
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2300022, guid: 439f7dbc4847cb64dbb7a601370510a4, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 49d2915f712c3914fadc7306c8d1dd99, type: 2}
+    - target: {fileID: 2300012, guid: 439f7dbc4847cb64dbb7a601370510a4, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: ac0587dff39d4624fb69a29c54b21565, type: 2}
     m_RemovedComponents:
     - {fileID: 2300052, guid: 439f7dbc4847cb64dbb7a601370510a4, type: 3}
     - {fileID: 2300050, guid: 439f7dbc4847cb64dbb7a601370510a4, type: 3}
