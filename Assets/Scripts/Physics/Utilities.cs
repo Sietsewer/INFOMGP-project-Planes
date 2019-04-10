@@ -1,5 +1,6 @@
 ﻿namespace Physics
 {
+    using System;
     using System.Collections.Generic;
     using UnityEngine;
 
@@ -87,6 +88,23 @@
             }
 
             return sum / totalVolume;
+        }
+
+        public static Vector3 weightedAverage<T>(IEnumerable<T> data, Func<T, float> weightFunction, Func<T, Vector3> pointFunction)
+        {
+            float sumWeight = 0.0f;
+            Vector3 sumPoint = default(Vector3);
+            
+            foreach(T dataEntry in data)
+            {
+                float weight = weightFunction(dataEntry);
+                Vector3 point = pointFunction(dataEntry);
+
+                sumPoint += point * weight;
+                sumWeight += weight;
+            }
+
+            return sumPoint / sumWeight;
         }
     }
 

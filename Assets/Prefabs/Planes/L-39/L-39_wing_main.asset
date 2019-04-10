@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bca39af3687b29d42ae038ea8eda794b, type: 3}
   m_Name: L-39_wing_main
   m_EditorClassIdentifier: 
-  liftMultiplier: 3
+  liftMultiplier: 2
   AngleOfAttackLimitMax: 30
   AngleOfAttackLimitMin: -30
   LiftCoefficientCurve:

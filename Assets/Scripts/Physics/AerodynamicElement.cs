@@ -6,6 +6,7 @@
     using UnityEditor;
     using System;
 
+    [ExecuteInEditMode]
     [RequireComponent(typeof(MeshCollider))]
     public class AerodynamicElement : MonoBehaviour
     {
@@ -15,13 +16,15 @@
 
         public Vector3 up = Vector3.forward;
 
-        public float angle = 0.0f;
+        public float centerOfLiftOffset = 0.0f;
 
         private Vector3 center;
 
         public float surfaceMultiplier = 1.0f;
 
-        public float area;
+        private float area;
+
+        public float centerOfLift;
 
         private List<ControlSurface> controlSurfaces = new List<ControlSurface>();
 
@@ -82,8 +85,10 @@
             // Use `Time.fixedDeltaTime` as delta-t
 
             Vector3 upWorld = transform.TransformDirection(up);
-            Vector3 centerOfLiftWorld = transform.TransformPoint(center);
             Vector3 forwardWorld = transform.TransformDirection(forward);
+
+            Vector3 centerOfLiftWorld = transform.TransformPoint(center) + forwardWorld * centerOfLiftOffset;
+
             Vector3 velocityVector = rigidbody.GetPointVelocity(centerOfLiftWorld);
 
             Vector3 liftForce = GetLift(velocityVector, velocityVector.sqrMagnitude, Utilities.AtmosphericDensity(centerOfLiftWorld), centerOfLiftWorld, upWorld, forwardWorld);
@@ -161,8 +166,17 @@
 
         private void OnDrawGizmos()
         {
+            Vector3 upWorld = transform.TransformDirection(up);
+            Vector3 forwardWorld = transform.TransformDirection(forward);
+
+            Vector3 centerOfLiftWorld = transform.TransformPoint(center) + forwardWorld * centerOfLiftOffset;
+
+            Gizmos.color = Color.blue;
+            Gizmos.DrawSphere(centerOfLiftWorld, 0.2f);
+
             if (collider != null && _liftCoefficient <= float.Epsilon)
             {
+                Gizmos.color = Color.white;
                 Gizmos.DrawWireMesh(collider.sharedMesh, transform.position, transform.rotation, transform.lossyScale);
                 Handles.Label(_centerOfLiftWorld, "Stalling!");
             }
