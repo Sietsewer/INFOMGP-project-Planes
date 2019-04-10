@@ -3,7 +3,9 @@ UU Game Physics practical project - Planes / aerodynamics
 
 Made by Sietse van der Werf *(6664334)* and Ioannis Fermanis *(6511325)*.
 
-It contains a small basic scene with a player controlled plane. Controls are on screen.
+This project contains a small basic scene with a player controlled plane. It features a simple lift model in the Unity engine, based on the [Modern Lift Equation](https://wright.nasa.gov/airplane/lifteq.html).
+
+All physics related scripts can be found in [Physics folder](https://github.com/Sietsewer/INFOMGP-project-Planes/tree/master/Assets/Scripts/Physics) under scripts.
 
 # Building
 
