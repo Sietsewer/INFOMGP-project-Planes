@@ -7,6 +7,10 @@ This project contains a small basic scene with a player controlled plane. It fea
 
 All physics related scripts can be found in [Physics folder](https://github.com/Sietsewer/INFOMGP-project-Planes/tree/master/Assets/Scripts/Physics) under scripts.
 
+# Builds
+
+Builds can be found on the [releases page](https://github.com/Sietsewer/INFOMGP-project-Planes/releases).
+
 # Building
 
 This project has the following dependencies:
