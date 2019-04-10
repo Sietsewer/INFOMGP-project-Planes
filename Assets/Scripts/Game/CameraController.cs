@@ -36,6 +36,10 @@
 
         void OrbitUpdate()
         {
+            float additionalDeltaRotation = .0f;
+
+            if (CameraMode == Mode.OrbitRotate) additionalDeltaRotation = TargetObject.rotation.eulerAngles.y;
+
             if (TargetObject == null) return;
 
             if (Input.GetMouseButton(0))
@@ -46,19 +50,20 @@
                 yOffset -= (mouseDelta.y / Screen.dpi) * 20;
 
                 xOffset %= 360;
-                yOffset = Mathf.Clamp(yOffset, -89.99f, 89.99f); // Not 90 to prevent gimbal lock
+                yOffset = Mathf.Clamp(yOffset, -89.99f, 89.99f); // Not 90 to prevent view snapping
             }
 
             zOffset -= Input.mouseScrollDelta.y * 0.5f;
             zOffset = Mathf.Clamp(zOffset, minDistance, maxDistance);
 
-            Quaternion rotation = Quaternion.Euler(yOffset, xOffset, 0);
+
+            Quaternion rotation = Quaternion.Euler(yOffset, xOffset + additionalDeltaRotation, 0);
 
             Vector3 offset = rotation * Vector3.back * zOffset;
 
             transform.position = TargetObject.position + offset;
             transform.LookAt(TargetObject);
-
+            
             previousMousePos = Input.mousePosition;
         }
 
@@ -68,7 +73,7 @@
 
             transform.LookAt(TargetObject);
         }
-        
+
         void Update()
         {
             if (CameraMode == Mode.Orbit || CameraMode == Mode.Track) Debug.Assert(TargetObject != null, "For tracking camera modes, tracking target must be set!", this);
@@ -76,6 +81,7 @@
             switch (CameraMode)
             {
                 case Mode.Orbit:
+                case Mode.OrbitRotate:
                     OrbitUpdate();
                     break;
                 case Mode.Track:
@@ -87,6 +93,7 @@
         public enum Mode
         {
             Orbit,
+            OrbitRotate,
             Track
         }
     }

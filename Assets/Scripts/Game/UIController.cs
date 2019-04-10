@@ -26,11 +26,18 @@
             Debug.Assert(infoText != null && plane != null, "No infotext or plane set", this);
 
 
-            float airspeed = plane.velocity.magnitude;
+            float airspeed = plane.velocity.magnitude * 3.6f;
 
-            float indicatedAirspeed = Vector3.Project(plane.velocity, plane.transform.forward).magnitude;
+            float indicatedAirspeed = Vector3.Project(plane.velocity, plane.transform.forward).magnitude * 3.6f;
 
-            infoText.text = "Real airspeed\t<b>" + (airspeed * 3.6f).ToString("0") + "\t</b>km/h\nIndicated airspeed\t<b>" + (indicatedAirspeed * 3.6f).ToString("0") + "\t</b>km/h";
+            float altitude = plane.position.y;
+
+            float aoa = Vector3.SignedAngle(plane.velocity, plane.transform.forward, plane.transform.right);
+
+            float climb = plane.velocity.y;
+
+            infoText.text = string.Format("Airspeed\n<size={0}><b>{1:0}</b></size> km/h\nClimb\n<size={0}><b>{2:0}</b></size> m/s\nA.O.A.\n<size={0}><b>{3:0}</b></size> °\nAltitude\n<size={0}><b>{4:0}</b></size> m\n",
+                20, indicatedAirspeed, climb, aoa, altitude);
         }
     }
 }

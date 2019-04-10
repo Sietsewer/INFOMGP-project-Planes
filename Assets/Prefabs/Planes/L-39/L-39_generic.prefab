@@ -189,7 +189,7 @@ MonoBehaviour:
   maxAngleUp: 0
   maxAngleDown: 60
   invert: 1
-  characteristics: {fileID: 11400000, guid: f4efc3a6440fad94d91f8162d9ecc67c, type: 2}
+  characteristics: {fileID: 11400000, guid: 6169c02284c83ab4f890c29fd6ac09f2, type: 2}
   wing: {fileID: 1111409472934224589}
   position: 0
   rotationAxis: 0
@@ -222,7 +222,7 @@ MonoBehaviour:
   maxAngleUp: 0
   maxAngleDown: 60
   invert: 1
-  characteristics: {fileID: 11400000, guid: f4efc3a6440fad94d91f8162d9ecc67c, type: 2}
+  characteristics: {fileID: 11400000, guid: 6169c02284c83ab4f890c29fd6ac09f2, type: 2}
   wing: {fileID: 5565349650050195310}
   position: 0
   rotationAxis: 0
@@ -516,7 +516,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forward: {x: 0, y: -1, z: 0}
   up: {x: 0, y: 0, z: 1}
-  centerOfLiftOffset: 0.36
+  centerOfLiftOffset: 0.56
   surfaceMultiplier: 1
   centerOfLift: 0
   characteristics: {fileID: 11400000, guid: ce57658a79554614abe9ecc582de824f, type: 2}
@@ -548,7 +548,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forward: {x: 0, y: -1, z: 0}
   up: {x: 0, y: 0, z: 1}
-  centerOfLiftOffset: 0.12
+  centerOfLiftOffset: 0.21
   surfaceMultiplier: 1
   centerOfLift: 0
   characteristics: {fileID: 11400000, guid: ce57658a79554614abe9ecc582de824f, type: 2}
@@ -665,7 +665,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forward: {x: 0, y: -1, z: 0}
   up: {x: 0, y: 0, z: 1}
-  centerOfLiftOffset: 0.36
+  centerOfLiftOffset: 0.56
   surfaceMultiplier: 1
   centerOfLift: 0
   characteristics: {fileID: 11400000, guid: ce57658a79554614abe9ecc582de824f, type: 2}
@@ -697,7 +697,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   forward: {x: 0, y: -1, z: 0}
   up: {x: 0, y: 0, z: 1}
-  centerOfLiftOffset: 0.12
+  centerOfLiftOffset: 0.21
   surfaceMultiplier: 1
   centerOfLift: 0
   characteristics: {fileID: 11400000, guid: ce57658a79554614abe9ecc582de824f, type: 2}
@@ -759,10 +759,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04eedf534e32a4141b16a84f32906035, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxAngleUp: 30
-  maxAngleDown: 30
+  maxAngleUp: 60
+  maxAngleDown: 60
   invert: 0
-  characteristics: {fileID: 11400000, guid: f4efc3a6440fad94d91f8162d9ecc67c, type: 2}
+  characteristics: {fileID: 11400000, guid: 4bd0998737e2ca9448e747abfdaa4298, type: 2}
   wing: {fileID: 3647722689670986853}
   position: 0.5
   rotationAxis: 2
