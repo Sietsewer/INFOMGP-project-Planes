@@ -25,9 +25,6 @@
 
             Debug.Assert(infoText != null && plane != null, "No infotext or plane set", this);
 
-
-            float airspeed = plane.velocity.magnitude * 3.6f;
-
             float indicatedAirspeed = Vector3.Project(plane.velocity, plane.transform.forward).magnitude * 3.6f;
 
             float altitude = plane.position.y;

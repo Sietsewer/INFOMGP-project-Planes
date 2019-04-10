@@ -135,23 +135,6 @@
             float liftCoefficient = characteristics.LiftCoefficient(angleOfAttack);
             liftCoefficient = ControlSurface.ModifyLiftCoefficient(liftCoefficient, controlSurfaces);
 
-            bool wasStalling = stalling;
-
-            if (stalling = (Mathf.Abs(liftCoefficient) <= float.Epsilon))
-            {
-                if (!wasStalling)
-                {
-                    Debug.Log(string.Format("Entered stall at '{0}' degrees AoA.", angleOfAttack));
-                }
-            }
-            else
-            {
-                if (wasStalling)
-                {
-                    Debug.Log(string.Format("Left stall at '{0}' degrees AoA.", angleOfAttack));
-                }
-            }
-
             _liftCoefficient = liftCoefficient;
             _centerOfLiftWorld = centerOfLiftWorld;
 
@@ -166,7 +149,6 @@
 
         private void OnDrawGizmos()
         {
-            Vector3 upWorld = transform.TransformDirection(up);
             Vector3 forwardWorld = transform.TransformDirection(forward);
 
             Vector3 centerOfLiftWorld = transform.TransformPoint(center) + forwardWorld * centerOfLiftOffset;
