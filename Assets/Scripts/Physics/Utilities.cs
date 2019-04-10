@@ -63,23 +63,9 @@
             return total / vertices.Length;
         }
 
-        private struct ValuePair<T1, T2>
-        {
-            public ValuePair(T1 value1, T2 value2)
-            {
-                this.value1 = value1;
-                this.value2 = value2;
-            }
-
-            public T1 value1;
-            public T2 value2;
-        }
-
         public static Vector3 CalculateCenterOfMass(Mesh mesh)
         {
             Vector3 average = AverageVector(mesh.vertices);
-
-            ValuePair<Vector3, float>[] valuePairs = new ValuePair<Vector3, float>[mesh.triangles.Length];
 
             Vector3 sum = Vector3.zero;
             float totalVolume = 0.0f;

@@ -23,13 +23,15 @@
 
         public float area;
 
-        public WingCharacteristics wing;
+        private List<ControlSurface> controlSurfaces = new List<ControlSurface>();
+
+        public WingCharacteristics characteristics;
 
         new private Rigidbody rigidbody;
 
         private void Awake() // First time initialization
         {
-            Debug.Assert(wing != null, "No wing characteristics!", gameObject);
+            Debug.Assert(characteristics != null, "No wing characteristics!", gameObject);
             
             collider = GetComponent<MeshCollider>();
 
@@ -70,14 +72,9 @@
             return area;
         }
 
-        private void OnEnable() // On (re)activation
+        internal bool RemoveControlSurface(ControlSurface controlSurface)
         {
-
-        }
-
-        private void Start() // First time initialization (late)
-        {
-
+            return controlSurfaces.Remove(controlSurface);
         }
 
         private void FixedUpdate() // Physics update
@@ -90,6 +87,7 @@
             Vector3 velocityVector = rigidbody.GetPointVelocity(centerOfLiftWorld);
 
             Vector3 liftForce = GetLift(velocityVector, velocityVector.sqrMagnitude, Utilities.AtmosphericDensity(centerOfLiftWorld), centerOfLiftWorld, upWorld, forwardWorld);
+
             Vector3 dragForce = GetDrag(velocityVector, velocityVector.sqrMagnitude, Utilities.AtmosphericDensity(centerOfLiftWorld), centerOfLiftWorld, upWorld, forwardWorld);
             
 #if DEBUG
@@ -111,11 +109,11 @@
         {
             float angleToWingUp = Vector3.Angle(upWorld, velocityVector) - 90;
 
-            float dragCoefficient = wing.DragCoefficient(angleToWingUp);
+            float dragCoefficient = characteristics.DragCoefficient(angleToWingUp);
 
             float dragNorm = .5f * dragCoefficient * density * velocitySqr * area;
 
-            return -velocityVector.normalized * Mathf.Abs(dragNorm);
+            return velocityVector.normalized * -Mathf.Abs(dragNorm);
         }
 
         private float _liftCoefficient = 0.0f;
@@ -129,7 +127,8 @@
 
             float angleOfAttack = Vector3.SignedAngle(forwardWorld, velocityVector, Vector3.Cross(upWorld, forwardWorld));
 
-            float liftCoefficient = wing.LiftCoefficient(angleOfAttack);
+            float liftCoefficient = characteristics.LiftCoefficient(angleOfAttack);
+            liftCoefficient = ControlSurface.ModifyLiftCoefficient(liftCoefficient, controlSurfaces);
 
             bool wasStalling = stalling;
 
@@ -169,24 +168,10 @@
             }
         }
 
-        private void Update() // Frame update
+
+        public void AddControlSurface(ControlSurface control)
         {
-            // Use `Time.deltaTime` as delta-t
-        }
-
-        private void LateUpdate() // Post-animation (integration) frame update
-        {
-            // Again, use `Time.deltaTime` as delta-t
-        }
-
-        private void OnDisable() // On de-activation
-        {
-
-        }
-
-        private void OnDestroy() // Finalization
-        {
-
+            controlSurfaces.Add(control);
         }
     }
 }

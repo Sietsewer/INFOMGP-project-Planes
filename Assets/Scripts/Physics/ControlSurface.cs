@@ -1,6 +1,7 @@
 ﻿namespace Physics
 {
     using System;
+    using System.Collections.Generic;
     using UnityEngine;
     
     public class ControlSurface : MonoBehaviour
@@ -8,6 +9,9 @@
         public float maxAngleUp = 30;
         public float maxAngleDown = 30;
         public bool invert = false;
+
+        public ControlSurfaceCharacteristics characteristics;
+        public AerodynamicElement wing;
 
         [Range(0, 1), SerializeField]
         private float position = 0.5f;
@@ -46,6 +50,38 @@
             this.position = position;
         }
 
+        private void Awake()
+        {
+            initialRotation = transform.localRotation;
+        }
+
+        private void OnEnable()
+        {
+            if (characteristics != null && wing != null)
+            {
+                wing.AddControlSurface(this); // register control surface with wing
+            }
+        }
+
+        private void OnDisable()
+        {
+            wing.RemoveControlSurface(this);
+        }
+
+        public static float ModifyLiftCoefficient(float liftCoefficient, List<ControlSurface> controls)
+        {
+            float multiplier = 1.0f;
+            float summant = 0.0f;
+
+            foreach (ControlSurface control in controls)
+            {
+                multiplier *= control.characteristics.coefficientMultiplierCurve.Evaluate(control.angle) * control.characteristics.multiplierMultiplier;
+                summant += control.characteristics.additionalCoefficientCurve.Evaluate(control.angle) * control.characteristics.additionalMultiplier;
+            }
+
+            return liftCoefficient * multiplier + summant;
+        }
+
         // Start is called before the first frame update
         private void Start()
         {
@@ -74,12 +110,7 @@
 
             if (invert) rotationVector = -rotationVector;
         }
-
-        private void Awake()
-        {
-            initialRotation = transform.localRotation;
-        }
-
+        
         // Update is called once per frame
         private void Update()
         {
