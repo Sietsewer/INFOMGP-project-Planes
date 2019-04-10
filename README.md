@@ -1,7 +1,9 @@
 # INFOMGP-project-Planes
 UU Game Physics practical project - Planes / aerodynamics
 
-It contains a small basic scene with a player controlled plane. Instructions are on screen.
+Made by Sietse van der Werf *(6664334)* and Ioannis Fermanis *(6511325)*.
+
+It contains a small basic scene with a player controlled plane. Controls are on screen.
 
 # Building
 
