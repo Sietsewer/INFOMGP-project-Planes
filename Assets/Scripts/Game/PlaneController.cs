@@ -4,6 +4,7 @@
     using System.Collections.Generic;
     using UnityEngine;
     using Physics;
+    using System.Linq;
 
     [RequireComponent(typeof(Animator))]
     [RequireComponent(typeof(Rigidbody))]
@@ -11,6 +12,8 @@
     {
         public List<BoundControlSurface> ControlSurfaces;
         public List<WheelCollider> Wheels;
+
+        public List<Joint> ExternalTanks = new List<Joint>();
 
         public List<Thruster> Thrusters;
 
@@ -51,6 +54,18 @@
                 Debug.Log(string.Format("Device {0}: {1}", cnt, name));
 
                 cnt++;
+            }
+        }
+
+        public void DropTank()
+        {
+            if (ExternalTanks.Any())
+            {
+                var tank = ExternalTanks.First();
+
+                tank.breakForce = float.Epsilon;
+
+                ExternalTanks.Remove(tank);
             }
         }
 

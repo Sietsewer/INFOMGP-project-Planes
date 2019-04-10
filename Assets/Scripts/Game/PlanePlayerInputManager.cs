@@ -3,6 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using UnityEngine;
+    using UnityEngine.SceneManagement;
 
     [RequireComponent(typeof(PlaneController))]
     public class PlanePlayerInputManager : MonoBehaviour
@@ -32,6 +33,16 @@
             if (Input.GetButtonUp("gear"))
             {
                 PlaneController.gear = !PlaneController.gear;
+            }
+
+            if (Input.GetButtonUp("tanks"))
+            {
+                PlaneController.DropTank();
+            }
+
+            if (Input.GetButtonUp("reset"))
+            {
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name, LoadSceneMode.Single);
             }
         }
     }

@@ -929,6 +929,7 @@ MonoBehaviour:
   - {fileID: 7727437513184805052}
   - {fileID: 756759658498877103}
   - {fileID: 7327387340298170934}
+  ExternalTanks: []
   Thrusters:
   - {fileID: 2661298863104241356}
   pitch: 0
