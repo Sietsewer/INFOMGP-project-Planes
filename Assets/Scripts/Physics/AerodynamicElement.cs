@@ -147,6 +147,7 @@
             return liftVector * liftNorm;
         }
 
+#if UNITY_EDITOR
         private void OnDrawGizmos()
         {
             Vector3 forwardWorld = transform.TransformDirection(forward);
@@ -163,7 +164,7 @@
                 Handles.Label(_centerOfLiftWorld, "Stalling!");
             }
         }
-
+#endif
 
         public void AddControlSurface(ControlSurface control)
         {

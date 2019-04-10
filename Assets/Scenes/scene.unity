@@ -1132,7 +1132,7 @@ MonoBehaviour:
     (elevators)\n<b>left/right</b>\t\tRoll (ailerons)\n<b>A/D</b>\t\t\t\tYaw (rudder)\n<b>F/V</b>\t\t\t\tFlaps\n<b>G</b>\t\t\t\t\tLanding
     gear\n<b>space</b>\t\t\tDrop external tanks\n<b>R</b>\t\t\t\t\tReload scene\n\nUse
     the <b>left mouse button</b> to move the view.\nUse the <b>scroll wheel</b> to
-    zoom."
+    zoom.\n\nPress <b>Esc</b> to quit."
 --- !u!222 &683069927
 CanvasRenderer:
   m_ObjectHideFlags: 0
